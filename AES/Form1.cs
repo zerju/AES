@@ -12,7 +12,7 @@ namespace AES
 {
     public partial class Form1 : Form
     {
-        string textInFile;
+        byte[] textInFile;
         char[] key = new char[16] { '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g' };
         byte[] sbox =
              {
@@ -74,7 +74,7 @@ namespace AES
             if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 string filename = openFileDialog1.FileName;
-                textInFile = System.IO.File.ReadAllText(@filename);
+                textInFile = System.IO.File.ReadAllBytes(@filename);
             }
         }
 
@@ -88,14 +88,13 @@ namespace AES
             encryptFile(textInFile, key);
         }
 
-        private void encryptFile(string message, char[] key) {
+        private void encryptFile(byte[] message, char[] key) {
             int numberOfRounds = 1;
-            byte[] byteMsg = Encoding.Default.GetBytes(message);
             byte[] byteKey = Encoding.Default.GetBytes(key);
             byte[] state = new byte[16];
             for(int i = 0; i < 16; i++)
             {
-                state[i] = byteMsg[i];
+                state[i] = message[i];
             }
 
             keyExpansion();
